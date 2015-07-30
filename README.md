@@ -5,7 +5,8 @@ Small script that does a cleanup of idle vms based on ceilometer stats.
 * Install:
 
 ```
-ubuntu@machine:~$ sudo pip install --upgrade ceilometer-janitor --force Downloading/unpacking ceilometer-janitor
+ubuntu@machine:~$ sudo pip install --upgrade ceilometer-janitor --force 
+  Downloading/unpacking ceilometer-janitor
   Downloading ceilometer-janitor-0.1.2.tar.gz
   Running setup.py (path:/tmp/pip_build_root/ceilometer-janitor/setup.py) egg_info for package ceilometer-janitor
     
@@ -44,8 +45,8 @@ ubuntu@machine:~$ ceilometer-janitor --action=stop --quiet=True -d 5 --exclude-t
 
 Looking for instances matching: cpu_util<=0.9 usage criteria ignoring the ones created over the last 5 days 
 
-louis-bouchard,ntp-coredump,2015-07-27T16:14:14Z 
-thkang0,juju-thkang0-machine-10,2015-07-27T16:14:25Z 
-vtapia,vtapia-precise,2015-07-27T16:18:20Z 
-petermatulis,pmatulis-juju-kvm,2015-07-28T17:05:35Z
+foo-user,ntp-coredump,2015-07-27T16:14:14Z 
+bar-user,juju-bar-machine-10,2015-07-27T16:14:25Z 
+bar-user-01,foo-precise,2015-07-27T16:18:20Z 
+foo,foo-juju-kvm,2015-07-28T17:05:35Z
 ```
