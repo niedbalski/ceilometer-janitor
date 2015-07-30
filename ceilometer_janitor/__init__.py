@@ -66,7 +66,6 @@ def instance_regex_matches(instance, regexes):
 
 
 def filter_instances(delta, excluded_tenants, excluded_instances):
-
     keystone = client.Client(username=os.environ.get('OS_USERNAME'),
                              password=os.environ.get('OS_PASSWORD'),
                              tenant_name=os.environ.get('OS_TENANT_NAME'),
@@ -77,16 +76,15 @@ def filter_instances(delta, excluded_tenants, excluded_instances):
                              auth_token=keystone.auth_token)
 
     for server in nova.servers.list(search_opts={'all_tenants': True}):
-        if is_bootstrap_or_bastion(server.human_id) or not is_active_vm(server.status) or \
-           not is_old_enough(server.updated, delta) or instance_regex_matches(
+        if not is_bootstrap_or_bastion(server.human_id) and is_active_vm(server.status) and \
+           is_old_enough(server.updated, delta) and not instance_regex_matches(
                server, excluded_instances):
-            continue
 
-        tenant = keystone.tenants.get(server.tenant_id)
-        setattr(tenant, 'email', keystone.users.get(server.user_id).email)
+            tenant = keystone.tenants.get(server.tenant_id)
+            setattr(tenant, 'email', keystone.users.get(server.user_id).email)
 
-        if tenant.name not in excluded_tenants:
-            yield tenant, server
+            if tenant.name not in excluded_tenants:
+                yield tenant, server
 
 
 def filter_ceilometer_stats(instance_id, meters):
@@ -160,6 +158,7 @@ def main():
             to_report[tenant.email] = []
 
         to_report[tenant.email].append(instance)
+
         if not options.quiet:
             print "{0},{1},{2} => {3}".format(tenant.name, instance.human_id,
                                               instance.updated, options.action)
