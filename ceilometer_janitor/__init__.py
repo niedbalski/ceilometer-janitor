@@ -77,7 +77,7 @@ def filter_instances(delta, excluded_tenants, excluded_instances):
                              auth_token=keystone.auth_token)
 
     for server in nova.servers.list(search_opts={'all_tenants': True}):
-        if is_bootstrap_or_bastion(server.human_id) or is_active_vm(server.status) or \
+        if is_bootstrap_or_bastion(server.human_id) or not is_active_vm(server.status) or \
            is_old_enough(server.updated, delta) or instance_regex_matches(
                server, excluded_instances):
             continue
