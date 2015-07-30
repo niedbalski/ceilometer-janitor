@@ -1,0 +1,1 @@
+include ceilometer_janitor/templates/*.tpl
